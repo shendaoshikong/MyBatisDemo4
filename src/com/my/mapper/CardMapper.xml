@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.mapper.CardMapper">
+
+	<!-- 根据id查询学生证信息 -->
+	<select id="selectCardById" parameterType="int" resultType="com.my.vo.Card">
+		select * from tb_stuCard where id=#{id}
+	</select>
+
+	<insert id="saveCard" parameterType="com.my.vo.Card">
+		<!-- 获取刚插入的card的自动生成的主键id；（用来插入person表的card_id） -->
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT
+			LAST_INSERT_ID() AS ID
+		</selectKey>
+		insert into
+		tb_stuCard(cardNo,departName,birthplace)
+		values(#{cardNo},#{departName},#{birthplace})
+	</insert>
+
+	<delete id="deleteCardById" parameterType="int">
+		delete from
+		tb_stuCard
+		where id=#{id}
+	</delete>
+
+	<update id="updateCardById" parameterType="com.my.vo.Card">
+		update tb_stuCard
+		set
+		cardNo=#{cardNo},departName=#{departName},birthplace=#{birthplace}
+		where
+		id=#{id}
+	</update>
+
+
+</mapper>

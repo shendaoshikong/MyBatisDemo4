@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.mapper.ProductMapper">
+
+	<resultMap type="com.my.vo.Product" id="productResultMapper">
+		<id property="id" column="id" />
+		<result property="proNo" column="proNo" />
+		<result property="proName" column="proName" />
+		<result property="type" column="type" />
+		<result property="proNum" column="proNum" />
+		<result property="price" column="price" />
+		<result property="order_id" column="order_id" />
+		<!--多对一映射：association -->
+		<association property="order" javaType="com.my.vo.Order">
+			<id property="id" column="id" />
+			<result property="orderNo" column="orderNo" />
+			<result property="orderTime" column="orderTime" />
+			<result property="orderPerson" column="orderPerson" />
+		</association>
+	</resultMap>
+
+	<select id="selectProductByOrderId" parameterType="int"
+		resultType="com.my.vo.Product">
+		select * from tb_product where order_id=#{order_id}
+	</select>
+
+	<insert id="saveProduct" parameterType="com.my.vo.Product">
+		insert into
+		tb_product(proNo,proName,type,proNum,price)
+		values(#{proNo},#{proName},#{type},#{proNum},#{price})
+	</insert>
+
+	<delete id="deleteProductById" parameterType="int">
+		delete from
+		tb_product where id=#{id}
+	</delete>
+
+	<update id="updateProductById" parameterType="com.my.vo.Product">
+		update tb_product
+		set
+		proNo=#{proNo},proName=#{proName},type=#{type},proNum=#{proNum},price=#{price},order_id=#{order_id}
+		where
+		id=#{id}
+	</update>
+
+
+</mapper>

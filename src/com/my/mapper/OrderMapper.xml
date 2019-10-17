@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.mapper.OrderMapper">
+
+	<resultMap type="com.my.vo.Order" id="orderResultMapper">
+		<id property="id" column="id" />
+		<result property="orderNo" column="orderNo" />
+		<result property="orderTime" column="orderTime" />
+		<result property="orderPerson" column="orderPerson" />
+		<!--一对多映射：association -->
+		<association property="products" column="id"
+			select="com.my.mapper.ProductMapper.selectProductByOrderId"
+			fetchType="lazy" javaType="ArrayList">
+			<id property="id" column="id" />
+			<result property="proNo" column="proNo" />
+			<result property="type" column="type" />
+			<result property="proNum" column="proNum" />
+			<result property="price" column="price" />
+		</association>
+	</resultMap>
+
+	<select id="selectOrderById" parameterType="int" resultMap="orderResultMapper">
+		select * from tb_order
+		where id=#{id}
+	</select>
+
+	<insert id="saveOrder" parameterType="com.my.vo.Order">
+		insert into
+		tb_order(orderNo,orderTime,orderPerson)
+		values(#{orderNo},#{orderTime},#{orderPerson})
+	</insert>
+
+	<delete id="deleteOrderById" parameterType="int">
+		delete from
+		tb_order
+		where id=#{id}
+	</delete>
+
+	<!-- <update id="updateStudentById" parameterType="com.my.vo.Student"> -->
+	<!-- update tb_student -->
+	<!-- set -->
+	<!-- stuNo=#{stuNo},stuName=#{stuName},className=#{className},stuId=#{stuId} -->
+	<!-- where -->
+	<!-- id=#{id} -->
+	<!-- </update> -->
+
+
+</mapper>
